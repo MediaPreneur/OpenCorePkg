@@ -19,14 +19,10 @@ def readstr(ea, l=256):
     str = ""
     while 1:
         c = ida_bytes.get_bytes(ea, 1)
-        if c == BADADDR:
-            if str == "":
-                return None
-            else:
-                return str
-        elif c == "\0":
+        if c == BADADDR and str == "":
+            return None
+        elif c in [BADADDR, "\0"]:
             return str
-
         str += c
         ea += 1
         if len(str) > l:
